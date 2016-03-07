@@ -21,7 +21,7 @@ var spa = (function($)
     // toggle slider height
     toggleSlider = function()
     {
-        var sliderHeight = $chatSlider.height();
+        var slider_height = $chatSlider.height();
 
         // extend slider if retracted
         if (slider_height === configMap.retracted_height)
@@ -31,7 +31,6 @@ var spa = (function($)
                 .attr( 'title', configMap.extended_title );
             return true;
         }
-
         else if (slider_height === configMap.extended_height)
         {
             $chatSlider
@@ -44,13 +43,41 @@ var spa = (function($)
         return false;
     };
 
+
+
+
+
     // receives click event and calls toggleSlider
-    onClickSlider = function(event) {};
+    onClickSlider = function(event)
+    {
+        toggleSlider();
+        return false;
+    };
+
+
+
 
     // public: sets initial state
     initModule = function($container) {
-        //render html
-        // init slider hght
-        // bind click
+        $container.html(configMap.template_html);
+        $chatSlider = $container.find('.spa-slider');
+        $chatSlider
+            .attr('title', configMap.retracted_title)
+            .click(onClickSlider);
+
+        return true;
     };
-}())
+
+
+
+    // export public
+    return { initModule : initModule };
+}(jQuery))
+
+
+
+
+//start the SPA
+$(function() {
+    spa.initModule( $('#spa') );
+});
